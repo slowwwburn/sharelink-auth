@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const crypto_1 = __importDefault(require("crypto"));
@@ -22,7 +22,7 @@ const Logger_1 = __importDefault(require("./Logger"));
 const fs_extra_1 = __importDefault(require("fs-extra"));
 const RedisClient_1 = __importDefault(require("./RedisClient"));
 const handlebars_1 = __importDefault(require("handlebars"));
-const colorObj = require("../colors.json");
+const colors_json_1 = __importDefault(require("./colors.json"));
 dotenv_1.default.config();
 const saltRounds = Number(process.env.saltRounds);
 const jwtSecret = process.env.jwtSecret;
@@ -80,7 +80,7 @@ class Util {
     hashPassword(password) {
         log("Salting password");
         try {
-            return bcrypt_1.default.hashSync(password, saltRounds);
+            return bcryptjs_1.default.hashSync(password, saltRounds);
         }
         catch (err) {
             throw err;
@@ -92,7 +92,7 @@ class Util {
             if (password === passwordHash) {
                 return true;
             }
-            const result = bcrypt_1.default.compareSync(password || "", passwordHash);
+            const result = bcryptjs_1.default.compareSync(password || "", passwordHash);
             return result;
         }
         catch (err) {
@@ -256,7 +256,7 @@ class Util {
             .join("");
     }
     getProfileColor() {
-        const colors = colorObj.colors;
+        const colors = colors_json_1.default.colors;
         try {
             if (!Array.isArray(colors) || colors.length === 0) {
                 throw new Error("Invalid or empty colors.json file.");
@@ -266,7 +266,7 @@ class Util {
         }
         catch (error) {
             console.error("Error reading or parsing colors.json:", error);
-            return null;
+            return { hex: "" };
         }
     }
     getInitials(firstName, lastName) {

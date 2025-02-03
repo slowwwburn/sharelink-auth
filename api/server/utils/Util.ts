@@ -4,13 +4,11 @@ import dotenv from "dotenv";
 import crypto, { verify } from "crypto";
 import nodemailer from "nodemailer";
 import path from "path";
-// import fs from 'fs';
 import createLogger from "./Logger";
 import fs from "fs-extra"; // Import fs-extra for file operations
 import redis from "./RedisClient";
 import handlebars from "handlebars";
-
-const colorObj = require("../colors.json");
+import colorObj from "./colors.json";
 
 dotenv.config();
 
@@ -19,16 +17,6 @@ const jwtSecret = process.env.jwtSecret;
 const tokenExpireTime = process.env.tokenExpireTime;
 
 const log = createLogger(__filename);
-
-interface UtilOptions {
-	statusCode?: string;
-	message?: string;
-	data?: any;
-	remitaCode?: string;
-	download?: string;
-	file?: string;
-	errorCode?: string;
-}
 
 class Util {
 	private statusCode: number | null = null;
@@ -303,7 +291,6 @@ class Util {
 
 	getProfileColor() {
 		const colors = colorObj.colors;
-
 		try {
 			// Ensure the file contains valid color data
 			if (!Array.isArray(colors) || colors.length === 0) {
@@ -315,7 +302,7 @@ class Util {
 			return colors[randomIndex];
 		} catch (error) {
 			console.error("Error reading or parsing colors.json:", error);
-			return null; // Handle error case
+			return  {hex:""};
 		}
 	}
 
