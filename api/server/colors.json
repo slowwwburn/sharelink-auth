@@ -1,0 +1,32 @@
+{
+	"colors": [
+		{
+			"name": "Pastel Yellow",
+			"hex": "#F8E9A1"
+		},
+		{
+			"name": "Blush Pink",
+			"hex": "#FFABAB"
+		},
+		{
+			"name": "Soft Mint",
+			"hex": "#ABEBC6"
+		},
+		{
+			"name": "Light Blue",
+			"hex": "#AED6F1"
+		},
+		{
+			"name": "Peach",
+			"hex": "#E6B0AA"
+		},
+		{
+			"name": "Silver",
+			"hex": "#E0E0E0"
+		},
+		{
+			"name": "Cool Gray",
+			"hex": "#D6DBDF"
+		}
+	]
+}

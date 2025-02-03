@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Reset Password</title>
+		<style>
+			/* Reset and container styling */
+			body {
+				margin: 0;
+				padding: 0;
+				width: 100% !important;
+				-webkit-text-size-adjust: 100%;
+				-ms-text-size-adjust: 100%;
+				font-family: "Source Sans Pro", Arial, sans-serif;
+				line-height: 1.5;
+				color: #333;
+			}
+			.container {
+				width: 100%;
+				max-width: 600px;
+				margin: 0 auto;
+				padding: 20px;
+				border: 1px solid #ddd;
+				background-color: #ffffff;
+			}
+		</style>
+		<!-- Link to Google Font -->
+		<link
+			href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap"
+			rel="stylesheet"
+		/>
+	</head>
+	<body>
+		<div class="container">
+			<table width="100%" cellpadding="0" cellspacing="0" margin="0 auto">
+				<tr>
+					<td align="center" style="padding-bottom: 20px">
+						<table style="display: inline-flex; align-items: center; gap: 10px">
+							<tr>
+								<td>
+									<img
+										src="https://res.cloudinary.com/dklw14eos/image/upload/v1736981386/share_logo_o22byv.svg"
+										alt="Company Logo"
+										width="50"
+										style="display: block"
+									/>
+								</td>
+								<td>
+									<h3
+										style="
+											margin: 0;
+											font-family: 'Source Sans Pro', Arial, sans-serif;
+										"
+									>
+										Sharelink
+									</h3>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+			<h3 style="font-family: 'Source Sans Pro', Arial, sans-serif">
+				Dear {{name}},
+			</h3>
+			<p style="font-family: 'Source Sans Pro', Arial, sans-serif">
+				Thanks for signing up on Sharelink, to proceed please use the
+				verification code below.
+			</p>
+			<h4
+				style="
+					font-family: 'Source Sans Pro', Arial, sans-serif;
+					color: #5283f2;
+					text-align: center;
+					font-size: 24px;
+				"
+			>
+				{{code}}
+			</h4>
+			<p style="font-family: 'Source Sans Pro', Arial, sans-serif">
+				Once logged in, you will be prompted to create a new password to ensure
+				the security of your account.
+			</p>
+			<p style="font-family: 'Source Sans Pro', Arial, sans-serif">Thanks,</p>
+			<p style="font-family: 'Source Sans Pro', Arial, sans-serif">
+				The Sharelink Team
+			</p>
+		</div>
+	</body>
+</html>
