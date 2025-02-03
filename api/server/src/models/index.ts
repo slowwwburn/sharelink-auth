@@ -4,14 +4,14 @@ import fs from "fs";
 import path from "path";
 import dotenv from "dotenv";
 import createLogger from "../../utils/Logger";
+import configFile from '../config/config'
 
 dotenv.config();
 
 const log = createLogger(__filename);
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
-console.log(env)
-const config = require(__dirname + "/../config/config.js")[env];
+const config = configFile[env]
 const db: { [key: string]: any } = {};
 
 let sequelize: Sequelize;
@@ -20,7 +20,6 @@ console.log(config)
 
 if (config.use_env_variable !== undefined) {
 	sequelize = new Sequelize(process.env[config.use_env_variable]!, config);
-	// log(sequelize);
 } else {
 	sequelize = new Sequelize(
 		config.database!,

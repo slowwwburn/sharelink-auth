@@ -17,8 +17,7 @@ interface BaseDB {
 	dialect: Dialect;
 	pool: Pool;
 	logging?(msg: any): void; // Enable detailed logging
-	
-	port?: string;
+	port?: number;
 	host?: string;
 }
 
@@ -37,11 +36,12 @@ interface LocalDB extends BaseDB {
 }
 
 type IConfig = {
-	development: OnlineDB | LocalDB;
-	test: OnlineDB | LocalDB;
-	preview: OnlineDB;
-	production: OnlineDB;
+	[key: string]: OnlineDB | LocalDB;
 };
+// development: OnlineDB | LocalDB;
+// test: OnlineDB | LocalDB;
+// preview: OnlineDB;
+// production: OnlineDB;
 
 // If using local database
 const config: IConfig = {
@@ -50,7 +50,7 @@ const config: IConfig = {
 		username: process.env.DB_USER!,
 		password: process.env.DB_PASS!,
 		host: process.env.DB_HOST,
-		port: "5432",
+		port: 5432,
 		dialect: "postgres",
 		pool: {
 			max: 10, // Maximum number of connections in the pool
@@ -65,7 +65,7 @@ const config: IConfig = {
 		username: process.env.DB_USER!,
 		password: process.env.DB_PASS!,
 		host: process.env.DB_HOST,
-		port: "5432",
+		port: 5432,
 		dialect: "postgres",
 		pool: {
 			max: 10, // Maximum number of connections in the pool
@@ -76,7 +76,7 @@ const config: IConfig = {
 		logging: (msg: any): void => debug(`[Sequelize]: ${msg}`),
 	},
 	preview: {
-		use_env_variable: 'DB_URL',
+		use_env_variable: "DB_URL",
 		dialect: "postgres",
 		pool: {
 			max: 10, // Maximum number of connections in the pool
@@ -87,7 +87,7 @@ const config: IConfig = {
 		logging: (msg: any): void => debug(`[Sequelize]: ${msg}`),
 	},
 	production: {
-		use_env_variable: process.env.DB_URL,
+		use_env_variable: "PROB_DB_URL",
 		dialect: "postgres",
 		pool: {
 			max: 10, // Maximum number of connections in the pool
