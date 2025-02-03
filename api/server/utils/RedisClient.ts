@@ -4,7 +4,7 @@ import createLogger from "./Logger";
 const log = createLogger(__filename);
 
 const redis: RedisClientType = createClient({
-	url: "redis://localhost:6379",
+	url: process.env.redis_URL,
 });
 
 redis.on("ready", () => log("Connected to Redis successfully"));
