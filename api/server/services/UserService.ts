@@ -137,7 +137,7 @@ class UserService {
 
 	static async getUserByEmailorUsername(param: string): Promise<any> {
 		try {
-			log("Retrieving User using Email/Username");
+			log("Retrieving User using Email/Username", param);
 			return await db.User.findOne({
 				where: {
 					[Op.or]: [{ email: param }, { username: param }],
