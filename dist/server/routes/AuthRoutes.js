@@ -7,4 +7,6 @@ const express_1 = require("express");
 const AuthController_1 = __importDefault(require("../controllers/AuthController"));
 const router = (0, express_1.Router)();
 router.get("/token", AuthController_1.default.authenticateToken);
+router.post("/logout", AuthController_1.default.logOut);
+router.post("/forgot", AuthController_1.default.forgotPassword);
 exports.default = router;

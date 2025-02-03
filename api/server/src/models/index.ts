@@ -16,7 +16,7 @@ const db: { [key: string]: any } = {};
 
 let sequelize: Sequelize;
 
-log(config)
+console.log(config)
 
 if (config.use_env_variable !== undefined) {
 	sequelize = new Sequelize(process.env[config.use_env_variable]!, config);

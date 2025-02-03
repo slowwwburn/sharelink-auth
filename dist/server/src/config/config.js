@@ -38,12 +38,19 @@ const config = {
         },
         logging: (msg) => debug(`[Sequelize]: ${msg}`),
     },
+    preview: {
+        use_env_variable: 'DB_URL',
+        dialect: "postgres",
+        pool: {
+            max: 10,
+            min: 2,
+            acquire: 30000,
+            idle: 10000,
+        },
+        logging: (msg) => debug(`[Sequelize]: ${msg}`),
+    },
     production: {
-        database: process.env.DB_NAME,
-        username: process.env.DB_USER,
-        password: process.env.DB_PASS,
-        host: process.env.DB_HOST,
-        port: "5432",
+        use_env_variable: process.env.DB_URL,
         dialect: "postgres",
         pool: {
             max: 10,

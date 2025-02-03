@@ -48,6 +48,7 @@ const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/../config/config.js")[env];
 const db = {};
 let sequelize;
+console.log(config);
 if (config.use_env_variable !== undefined) {
     sequelize = new sequelize_1.Sequelize(process.env[config.use_env_variable], config);
 }
@@ -66,10 +67,8 @@ fs_1.default.readdirSync(__dirname)
         file.indexOf(".test.ts") === -1);
 })
     .forEach((file) => __awaiter(void 0, void 0, void 0, function* () {
-    log(`Loading model from file: ${file}`);
     const { default: model } = yield Promise.resolve(`${path_1.default.join(__dirname, file)}`).then(s => __importStar(require(s)));
     const initializedModel = model(sequelize, sequelize_1.DataTypes);
-    log(`Model initialized: ${initializedModel.name}`);
     db[initializedModel.name] = initializedModel;
 }));
 Object.keys(db).forEach((modelName) => {

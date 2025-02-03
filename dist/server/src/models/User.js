@@ -28,17 +28,26 @@ const initModel = (sequelize) => {
         },
         username: {
             type: sequelize_1.DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
             unique: true,
         },
         password: {
             type: sequelize_1.DataTypes.STRING,
             allowNull: false,
         },
+        phonenumber: {
+            type: sequelize_1.DataTypes.STRING,
+            unique: true,
+            allowNull: false,
+        },
         email: {
             type: sequelize_1.DataTypes.STRING,
             allowNull: false,
             unique: true,
+        },
+        image: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: true,
         },
         bvn: {
             type: sequelize_1.DataTypes.STRING,
@@ -47,8 +56,32 @@ const initModel = (sequelize) => {
         },
         accountNumber: {
             type: sequelize_1.DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
             unique: true,
+        },
+        bankCode: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: true,
+        },
+        initials: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: true,
+        },
+        color: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: true,
+        },
+        security: {
+            type: sequelize_1.DataTypes.BOOLEAN,
+            allowNull: true,
+        },
+        paystackId: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: true,
+        },
+        paystackStatus: {
+            type: sequelize_1.DataTypes.STRING,
+            allowNull: true,
         },
     }, {
         sequelize,
