@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "DEBUG=app:* npx nodemon --clear --watch 'src/**/*.ts' --exec ts-node-dev ./api/app.ts",
 		"prestart": "npm run build",
-		"start": "DEBUG=app:* node dist/index.js",
+		"start": "DEBUG=app:* node dist/app.js",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build": "tsc"
 	},
