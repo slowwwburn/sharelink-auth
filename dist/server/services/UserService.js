@@ -159,7 +159,7 @@ class UserService {
     static getUserByEmailorUsername(param) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                log("Retrieving User using Email/Username");
+                log("Retrieving User using Email/Username", param);
                 return yield models_1.default.User.findOne({
                     where: {
                         [sequelize_1.Op.or]: [{ email: param }, { username: param }],

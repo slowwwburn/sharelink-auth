@@ -7,7 +7,7 @@
 		"prestart": "npm run build",
 		"start": "DEBUG=app:* node dist/app.js",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"build": "tsc"
+		"build": "tsc && cp -r api/server/templates dist/server/templates"
 	},
 	"author": "Olalekan Balogun",
 	"license": "ISC",

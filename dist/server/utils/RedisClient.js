@@ -17,7 +17,7 @@ const redis_1 = require("redis");
 const Logger_1 = __importDefault(require("./Logger"));
 const log = (0, Logger_1.default)(__filename);
 const redis = (0, redis_1.createClient)({
-    url: "redis://localhost:6379",
+    url: process.env.redis_URL,
 });
 redis.on("ready", () => log("Connected to Redis successfully"));
 redis.on("error", (err) => log("Redis Client Error", err));
