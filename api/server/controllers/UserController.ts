@@ -167,7 +167,7 @@ class UserController {
 		try {
 			const bvn = await util.redisGet(user.bvn);
 			const { otp } = JSON.parse(bvn);
-			const found = await util.redisGet(bvn.otp);
+			const found = await util.redisGet(user.otp);
 			if (found) {
 				log(otp, user.otp);
 				if (user.otp === otp) {
