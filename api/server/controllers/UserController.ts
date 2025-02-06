@@ -79,7 +79,7 @@ class UserController {
 				name: user.firstName,
 				code: otp,
 			});
-			util.setSuccess(200, "00", "OTP sent to your BVN phone number", {
+			util.setSuccess(200, "00", "OTP sent to your email address", {
 				otpId,
 				expiryTime,
 			});
@@ -96,45 +96,50 @@ class UserController {
 	static async revalidateBVN(req: Request, res: Response) {
 		log("Request to resend otp received");
 		const { bvn, otpId } = req.body;
+
+		if (!bvn || !otpId) {
+			log("Payload is invalid");
+			util.setError(400, "98", "Bad Request");
+			return util.send(res);
+		}
+
 		try {
 			log("Regenerating OTP");
-			const otp = util.generateOTP();
+			const newOtp = util.generateOTP();
 			const newOtpId = crypto.randomUUID();
 			const expiryTime = 180;
 			log("Inserting otp into redis");
 
 			const existingKey = await util.redisGet(bvn);
 			if (existingKey) {
-				const expired = await util.redisExpiryCheck(bvn);
-				if (parseInt(expired) < 180) {
+				if (parseInt(await util.redisExpiryCheck(bvn)) < 180) {
 					util.setError(400, "98", "BVN validation request expired");
 					return util.send(res);
 				}
+
 				if (await util.redisGet(otpId || "")) {
 					await util.redisDelete(otpId);
 				}
 
 				const { email, firstName } = JSON.parse(existingKey);
-				log(email);
-				// await util.redisPost(
-				// 	bvn,
-				// 	JSON.stringify({ otp, contact, name }),
-				// 	resendTime
-				// );
-				await util.redisPost(newOtpId, otp, expiryTime);
+				await util.redisPost(
+					newOtpId,
+					JSON.stringify({ bvn, otp: newOtp }),
+					expiryTime
+				);
 				log("Initiating mail trigger");
-				await util.sendMail(email, "Idenity Verification", {
+				await util.sendMail(email, "Identity Verification", {
 					template: "verify_code",
 					name: firstName,
-					code: otp,
+					code: newOtp,
 				});
-				util.setSuccess(200, "00", "OTP sent to your BVN phone number", {
+				util.setSuccess(200, "00", "OTP sent to your email address", {
 					otpId: newOtpId,
 					expiryTime,
 				});
 				return util.send(res);
 			} else {
-				util.setError(400, "98", "OTP request not found");
+				util.setError(400, "91", "OTP session expired");
 				return util.send(res);
 			}
 		} catch (err: any) {
@@ -146,33 +151,26 @@ class UserController {
 
 	static async registerUser(req: Request, res: Response) {
 		log("Request to create user received");
-		const user = req.body;
-		const requiredFields = [
-			"firstName",
-			"lastName",
-			"bvn",
-			"dob",
-			"email",
-			"password",
-			"phonenumber",
-			"otp",
-		];
+		const validateOtpBody = req.body;
+		const requiredFields = ["otpId", "otp"];
 
-		if (util.payloadisInvalid(user, requiredFields)) {
+		if (util.payloadisInvalid(validateOtpBody, requiredFields)) {
 			log("Bad request payload", req.body);
 			util.setError(400, "98", "Bad Request");
 			return util.send(res);
 		}
 
 		try {
-			const bvn = await util.redisGet(user.bvn);
-			const { otp } = JSON.parse(bvn);
-			const found = await util.redisGet(user.otp);
-			if (found) {
-				log(otp, user.otp);
-				if (user.otp === otp) {
-					log("otp is valid");
-					const createdUser = await UserService.addUser(user);
+			const foundOtp = JSON.parse(await util.redisGet(validateOtpBody.otpId));
+			if (foundOtp) {
+				const savedUser = JSON.parse(await util.redisGet(foundOtp.bvn));
+				if (!savedUser) {
+					util.setError(400, "91", "Otp session expired");
+					return util.send(res);
+				}
+
+				if (validateOtpBody.otp === foundOtp.otp) {
+					const createdUser = await UserService.addUser(savedUser);
 
 					try {
 						const { data } = await walletAxios.post<any>("wallet/create", {
@@ -203,16 +201,16 @@ class UserController {
 					util.checkMemory();
 					return util.send(res);
 				} else {
-					util.setError(400, "43", "Otp expired");
+					util.setError(400, "43", "Invalid OTP");
 					return util.send(res);
 				}
 			} else {
-				util.setError(400, "43", "Invalid OTP");
+				util.setError(400, "43", "Otp expired");
 				return util.send(res);
 			}
 		} catch (err: any) {
 			log("Error occurred while registering user", err);
-			util.setError(400, "99", "Internal Server Error");
+			util.setError(500, "99", "Internal Server Error");
 			return util.send(res);
 		}
 	}

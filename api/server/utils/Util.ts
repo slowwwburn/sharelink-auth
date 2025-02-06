@@ -226,7 +226,6 @@ class Util {
 					pass: process.env.email,
 				},
 				logger: true, // Enable logging
-				debug: true,
 			});
 
 			// try {
@@ -299,6 +298,7 @@ class Util {
 
 			// Select a random color
 			const randomIndex = Math.floor(Math.random() * colors.length);
+			log(colors[randomIndex])
 			return colors[randomIndex];
 		} catch (error) {
 			console.error("Error reading or parsing colors.json:", error);

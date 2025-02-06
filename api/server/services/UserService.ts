@@ -12,6 +12,7 @@ class UserService {
 		try {
 			log("Creating User", params);
 			params.color = util.getProfileColor().hex;
+			log(params.color)
 			params.initials = util.getInitials(params.firstName, params.lastName);
 			if (params.password) params.password = util.hashPassword(params.password);
 			const user = await db.User.create(params);
